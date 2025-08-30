@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Classroom & Time Scheduler - Admin Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #4f46e5;
+            --secondary: #6b7280;
+            --accent: #10b981;
+            --dark: #1f2937;
+            --light: #f9fafb;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+        }
+
+        .sidebar {
+            scrollbar-width: thin;
+            scrollbar-color: #4b5563 #1f2937;
+        }
+
+        .sidebar::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .sidebar::-webkit-scrollbar-thumb {
+            background-color: #4b5563;
+            border-radius: 3px;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+        }
+
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+
+        @media (max-width: 768px) {
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body class="bg-gray-50 min-h-screen">
+    <!-- Header -->
+    <header class="bg-white shadow-sm border-b border-gray-200 fixed top-0 left-0 right-0 z-50">
+        <div class="flex items-center justify-between px-6 py-3">
+            <div class="flex items-center space-x-4">
+                <div class="lg:hidden">
+                    <button id="sidebarToggle" class="text-gray-600 hover:text-indigo-600">
+                        <i class="fas fa-bars text-xl"></i>
+                    </button>
+                </div>
+                <div class="flex items-center">
+                    <div class="w-8 h-8 bg-indigo-600 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-graduation-cap text-white"></i>
+                    </div>
+                    <h1 class="ml-3 text-xl font-bold text-gray-800">Smart Classroom</h1>
+                </div>
+            </div>
+
+            <div class="flex items-center space-x-4">
+                <div class="relative">
+                    <button class="p-2 text-gray-500 hover:text-indigo-600 relative">
+                        <i class="fas fa-bell text-lg"></i>
+                        <span class="absolute top-0 right-0 w-2 h-2 bg-red-500 rounded-full"></span>
+                    </button>
+                </div>
+                <div class="relative">
+                    <button class="flex items-center space-x-2">
+                        <div
+                            class="w-8 h-8 bg-gradient-to-r from-indigo-500 to-purple-600 rounded-full flex items-center justify-center">
+                            <span class="text-white text-sm font-medium">A</span>
+                        </div>
+                        <span class="text-gray-700 hidden md:block">Admin User</span>
+                        <i class="fas fa-chevron-down text-gray-400 text-xs"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Sidebar -->
+    <aside id="sidebar"
+        class="fixed left-0 top-16 w-64 h-[calc(100vh-4rem)] bg-white border-r border-gray-200 shadow-sm transform -translate-x-full lg:translate-x-0 transition-transform duration-300 z-40 sidebar overflow-y-auto">
+        <nav class="p-4">
+            <div class="mb-8">
+                <h2 class="text-xs uppercase font-semibold text-gray-500 tracking-wider mb-4">Main Menu</h2>
+                <ul class="space-y-2">
+                    <li>
+                        <a href="#" class="flex items-center px-4 py-3 text-indigo-600 bg-indigo-50 rounded-lg">
+                            <i class="fas fa-chart-line w-5 mr-3"></i>
+                            <span>Dashboard</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#"
+                            class="flex items-center px-4 py-3 text-gray-600 hover:text-indigo-600 hover:bg-gray-50 rounded-lg">
+                            <i class="fas fa-calendar-alt w-5 mr-3"></i>
+                            <span>Schedule</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#"
+                            class="flex items-center px-4 py-3 text-gray-600 hover:text-indigo-600 hover:bg-gray-50 rounded-lg">
+                           <i class="fas fa-id-badge w-5 mr-3"></i>
+
+                            <span>Batch</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#"
+                            class="flex items-center px-4 py-3 text-gray-600 hover:text-indigo-600 hover:bg-gray-50 rounded-lg">
+                            <i class="fas fa-chalkboard w-5 mr-3"></i>
+                            <span>Classrooms</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#"
+                            class="flex items-center px-4 py-3 text-gray-600 hover:text-indigo-600 hover:bg-gray-50 rounded-lg">
+                            <i class="fas fa-users w-5 mr-3"></i>
+                            <span>Teachers</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#"
+                            class="flex items-center px-4 py-3 text-gray-600 hover:text-indigo-600 hover:bg-gray-50 rounded-lg">
+                            <i class="fas fa-book w-5 mr-3"></i>
+                            <span>Courses</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="mb-8">
+                <h2 class="text-xs uppercase font-semibold text-gray-500 tracking-wider mb-4">Management</h2>
+                <ul class="space-y-2">
+                    <li>
+                        <a href="#"
+                            class="flex items-center px-4 py-3 text-gray-600 hover:text-indigo-600 hover:bg-gray-50 rounded-lg">
+                            <i class="fas fa-cog w-5 mr-3"></i>
+                            <span>Settings</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#"
+                            class="flex items-center px-4 py-3 text-gray-600 hover:text-indigo-600 hover:bg-gray-50 rounded-lg">
+                            <i class="fas fa-chart-bar w-5 mr-3"></i>
+                            <span>Reports</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#"
+                            class="flex items-center px-4 py-3 text-gray-600 hover:text-indigo-600 hover:bg-gray-50 rounded-lg">
+                            <i class="fas fa-bell w-5 mr-3"></i>
+                            <span>Notifications</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="lg:ml-64 mt-16 p-6">
+        <!-- Page Header -->
+        <div class="mb-8">
+            <h2 class="text-2xl font-bold text-gray-800">Dashboard Overview</h2>
+            <p class="text-gray-600">Welcome back! Here's what's happening with your classrooms today.</p>
+        </div>
+
+        <!-- Stats Grid -->
+        <div class="dashboard-grid mb-8">
+            <div class="stat-card bg-white rounded-xl shadow-sm p-6 border border-gray-100 transition-all duration-300">
+                <div class="flex items-center justify-between mb-4">
+                    <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-chalkboard text-blue-600 text-xl"></i>
+                    </div>
+                    <span class="text-sm font-medium text-green-600 bg-green-100 px-2 py-1 rounded-full">+12%</span>
+                </div>
+                <h3 class="text-2xl font-bold text-gray-800 mb-1">24</h3>
+                <p class="text-gray-600">Active Classrooms</p>
+            </div>
+
+            <div class="stat-card bg-white rounded-xl shadow-sm p-6 border border-gray-100 transition-all duration-300">
+                <div class="flex items-center justify-between mb-4">
+                    <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-users text-green-600 text-xl"></i>
+                    </div>
+                    <span class="text-sm font-medium text-green-600 bg-green-100 px-2 py-1 rounded-full">+8%</span>
+                </div>
+                <h3 class="text-2xl font-bold text-gray-800 mb-1">156</h3>
+                <p class="text-gray-600">Total Students</p>
+            </div>
+
+            <div class="stat-card bg-white rounded-xl shadow-sm p-6 border border-gray-100 transition-all duration-300">
+                <div class="flex items-center justify-between mb-4">
+                    <div class="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-calendar-check text-purple-600 text-xl"></i>
+                    </div>
+                    <span class="text-sm font-medium text-red-600 bg-red-100 px-2 py-1 rounded-full">-3%</span>
+                </div>
+                <h3 class="text-2xl font-bold text-gray-800 mb-1">42</h3>
+                <p class="text-gray-600">Sessions Today</p>
+            </div>
+
+            <div class="stat-card bg-white rounded-xl shadow-sm p-6 border border-gray-100 transition-all duration-300">
+                <div class="flex items-center justify-between mb-4">
+                    <div class="w-12 h-12 bg-orange-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-clock text-orange-600 text-xl"></i>
+                    </div>
+                    <span class="text-sm font-medium text-green-600 bg-green-100 px-2 py-1 rounded-full">+5%</span>
+                </div>
+                <h3 class="text-2xl font-bold text-gray-800 mb-1">92%</h3>
+                <p class="text-gray-600">Utilization Rate</p>
+            </div>
+        </div>
+
+        <!-- Content Grid -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+            <!-- Upcoming Sessions -->
+            <div class="bg-white rounded-xl shadow-sm p-6">
+                <div class="flex items-center justify-between mb-6">
+                    <h3 class="text-lg font-semibold text-gray-800">Upcoming Sessions</h3>
+                    <button class="text-indigo-600 text-sm font-medium">View All</button>
+                </div>
+                <div class="space-y-4">
+                    <div class="flex items-center justify-between p-3 bg-blue-50 rounded-lg">
+                        <div>
+                            <h4 class="font-medium text-gray-800">Mathematics 101</h4>
+                            <p class="text-sm text-gray-600">Room A12 • 9:00 AM - 10:30 AM</p>
+                        </div>
+                        <span class="px-3 py-1 bg-blue-100 text-blue-800 text-xs rounded-full">Starting soon</span>
+                    </div>
+                    <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                        <div>
+                            <h4 class="font-medium text-gray-800">Physics Lab</h4>
+                            <p class="text-sm text-gray-600">Lab B05 • 11:00 AM - 12:30 PM</p>
+                        </div>
+                        <span class="px-3 py-1 bg-gray-100 text-gray-800 text-xs rounded-full">Scheduled</span>
+                    </div>
+                    <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                        <div>
+                            <h4 class="font-medium text-gray-800">Computer Science</h4>
+                            <p class="text-sm text-gray-600">Room C08 • 2:00 PM - 3:30 PM</p>
+                        </div>
+                        <span class="px-3 py-1 bg-gray-100 text-gray-800 text-xs rounded-full">Scheduled</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Classroom Status -->
+            <div class="bg-white rounded-xl shadow-sm p-6">
+                <div class="flex items-center justify-between mb-6">
+                    <h3 class="text-lg font-semibold text-gray-800">Classroom Status</h3>
+                    <button class="text-indigo-600 text-sm font-medium">Manage</button>
+                </div>
+                <div class="space-y-3">
+                    <div class="flex items-center justify-between">
+                        <span class="text-gray-600">Available</span>
+                        <span class="font-medium text-green-600">18 Rooms</span>
+                    </div>
+                    <div class="flex items-center justify-between">
+                        <span class="text-gray-600">In Use</span>
+                        <span class="font-medium text-blue-600">4 Rooms</span>
+                    </div>
+                    <div class="flex items-center justify-between">
+                        <span class="text-gray-600">Maintenance</span>
+                        <span class="font-medium text-orange-600">2 Rooms</span>
+                    </div>
+                    <div class="w-full bg-gray-200 rounded-full h-2 mt-2">
+                        <div class="bg-gradient-to-r from-green-400 to-blue-400 h-2 rounded-full" style="width: 75%">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Recent Activities -->
+        <div class="bg-white rounded-xl shadow-sm p-6 mb-8">
+            <div class="flex items-center justify-between mb-6">
+                <h3 class="text-lg font-semibold text-gray-800">Recent Activities</h3>
+                <button class="text-indigo-600 text-sm font-medium">View All</button>
+            </div>
+            <div class="overflow-x-auto">
+                <table class="w-full">
+                    <thead>
+                        <tr class="text-left text-sm text-gray-500 border-b">
+                            <th class="pb-3">Activity</th>
+                            <th class="pb-3">Classroom</th>
+                            <th class="pb-3">Time</th>
+                            <th class="pb-3">Status</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y">
+                        <tr>
+                            <td class="py-3">Mathematics class started</td>
+                            <td class="py-3">Room A12</td>
+                            <td class="py-3">2 minutes ago</td>
+                            <td class="py-3"><span
+                                    class="px-2 py-1 bg-green-100 text-green-800 text-xs rounded-full">Active</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="py-3">Physics lab booked</td>
+                            <td class="py-3">Lab B05</td>
+                            <td class="py-3">15 minutes ago</td>
+                            <td class="py-3"><span
+                                    class="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded-full">Scheduled</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="py-3">Maintenance completed</td>
+                            <td class="py-3">Room D07</td>
+                            <td class="py-3">1 hour ago</td>
+                            <td class="py-3"><span
+                                    class="px-2 py-1 bg-gray-100 text-gray-800 text-xs rounded-full">Completed</span>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Quick Actions -->
+        <div class="bg-white rounded-xl shadow-sm p-6">
+            <h3 class="text-lg font-semibold text-gray-800 mb-6">Quick Actions</h3>
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                <button
+                    class="flex flex-col items-center p-4 bg-indigo-50 rounded-lg hover:bg-indigo-100 transition-colors">
+                    <div class="w-10 h-10 bg-indigo-600 rounded-lg flex items-center justify-center mb-2">
+                        <i class="fas fa-plus text-white"></i>
+                    </div>
+                    <span class="text-sm font-medium text-indigo-700">New Booking</span>
+                </button>
+                <button
+                    class="flex flex-col items-center p-4 bg-green-50 rounded-lg hover:bg-green-100 transition-colors">
+                    <div class="w-10 h-10 bg-green-600 rounded-lg flex items-center justify-center mb-2">
+                        <i class="fas fa-calendar text-white"></i>
+                    </div>
+                    <span class="text-sm font-medium text-green-700">View Schedule</span>
+                </button>
+                <button
+                    class="flex flex-col items-center p-4 bg-purple-50 rounded-lg hover:bg-purple-100 transition-colors">
+                    <div class="w-10 h-10 bg-purple-600 rounded-lg flex items-center justify-center mb-2">
+                        <i class="fas fa-cog text-white"></i>
+                    </div>
+                    <span class="text-sm font-medium text-purple-700">Settings</span>
+                </button>
+                <button
+                    class="flex flex-col items-center p-4 bg-orange-50 rounded-lg hover:bg-orange-100 transition-colors">
+                    <div class="w-10 h-10 bg-orange-600 rounded-lg flex items-center justify-center mb-2">
+                        <i class="fas fa-chart-bar text-white"></i>
+                    </div>
+                    <span class="text-sm font-medium text-orange-700">Reports</span>
+                </button>
+            </div>
+        </div>
+    </main>
+
+    <!-- Mobile Overlay -->
+    <div id="overlay" class="fixed inset-0 bg-black bg-opacity-50 z-30 hidden"></div>
+
+    <script>
+        // Mobile sidebar toggle
+        const sidebar = document.getElementById('sidebar');
+        const sidebarToggle = document.getElementById('sidebarToggle');
+        const overlay = document.getElementById('overlay');
+
+        sidebarToggle.addEventListener('click', () => {
+            sidebar.classList.toggle('-translate-x-full');
+            overlay.classList.toggle('hidden');
+        });
+
+        overlay.addEventListener('click', () => {
+            sidebar.classList.add('-translate-x-full');
+            overlay.classList.add('hidden');
+        });
+
+        // Initialize tooltips and other interactions
+        document.addEventListener('DOMContentLoaded', function () {
+            // Add animation to stat cards
+            const statCards = document.querySelectorAll('.stat-card');
+            statCards.forEach(card => {
+                card.addEventListener('mouseenter', () => {
+                    card.style.transform = 'translateY(-2px)';
+                    card.style.boxShadow = '0 10px 25px -5px rgba(0, 0, 0, 0.1)';
+                });
+                card.addEventListener('mouseleave', () => {
+                    card.style.transform = 'translateY(0)';
+                    card.style.boxShadow = '0 1px 3px 0 rgba(0, 0, 0, 0.1)';
+                });
+            });
+
+            // Simulate loading data
+            setTimeout(() => {
+                console.log('Dashboard data loaded successfully');
+            }, 1000);
+        });
+    </script>
+</body>
+
+</html>
