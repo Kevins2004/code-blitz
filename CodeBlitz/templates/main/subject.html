@@ -1,0 +1,146 @@
+{% extends 'main/index.html' %}
+{% comment %} {% load dict_extras %} {% endcomment %}
+
+{% block title %}<title>Subject</title>{% endblock title %}
+
+{% block main %}
+<div class="p-6">
+
+    <!-- Page Header -->
+    <div class="flex justify-between items-center mb-6">
+        <h1 class="text-2xl font-bold text-gray-800">Class Timetable Scheduler</h1>
+    </div>
+
+    <!-- Timetable Form -->
+    <form method="POST" class="space-y-6 bg-white p-6 rounded-xl shadow-lg">
+        {% csrf_token %}
+
+              
+      
+      
+      <!-- Subject Code -->
+      <div>
+        <label class="block text-gray-700 font-semibold mb-2">
+          Subject Code <span class="text-red-500">*</span>
+        </label>
+        <input 
+          type="text" 
+          id="subject_code" 
+          name="subject_code" 
+          placeholder="Enter subject code" 
+          required
+          class="w-full rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition"
+          aria-describedby="subject_code_help" maxlength="9" max="9"
+        />
+        <p id="subject_code_help" class="mt-1 text-xs text-gray-500">Unique code for the subject (e.g., MATH101).</p>
+      </div>
+
+      <!-- Subject Name -->
+      <div>
+        <label class="block text-gray-700 font-semibold mb-2">
+          Subject Name <span class="text-red-500">*</span>
+        </label>
+        <input 
+          type="text" 
+          id="subject_name" 
+          name="subject_name" 
+          placeholder="Enter subject name" 
+          required
+          class="w-full rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition"
+          aria-describedby="subject_name_help"
+        />
+        <p id="subject_name_help" class="mt-1 text-xs text-gray-500">Full name of the subject.</p>
+      </div>
+
+      <!-- Credits -->
+      <div>
+        <label class="block text-gray-700 font-semibold mb-2">
+          Credits <span class="text-red-500">*</span>
+        </label>
+        <input 
+          type="number" 
+          id="credits" 
+          name="credits" 
+          placeholder="Enter number of credits" 
+          min="0" max="10" 
+          required
+          class="w-full rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition"
+          aria-describedby="credits_help"
+        />
+        <p id="credits_help" class="mt-1 text-xs text-gray-500">Credit value for the subject.</p>
+      </div>
+
+      <!-- Semester -->
+      <div>
+        <label class="block text-gray-700 font-semibold mb-2">
+          Semester <span class="text-red-500">*</span>
+        </label>
+        <select 
+          id="semester" 
+          name="semester" 
+          required
+          class="w-full rounded-md border border-gray-300 px-3 py-2 bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition"
+          aria-describedby="semester_help"
+        >
+          <option value="" disabled selected>Select semester</option>
+          <option value="1">1</option>
+          <option value="2">2</option>
+          <option value="3">3</option>
+          <option value="4">4</option>
+          <option value="5">5</option>
+          <option value="6">6</option>
+          <option value="7">7</option>
+          <option value="8">8</option>
+        </select>
+        <p id="semester_help" class="mt-1 text-xs text-gray-500">Select the semester for the subject.</p>
+      </div>
+
+      <!-- Course -->
+      <div>
+        <label class="block text-gray-700 font-semibold mb-2">
+          Course <span class="text-red-500">*</span>
+        </label>
+        <input 
+          type="text" 
+          id="course" 
+          name="course" 
+          placeholder="Enter course name" 
+          required
+          class="w-full rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition"
+          aria-describedby="course_help"
+        />
+        <p id="course_help" class="mt-1 text-xs text-gray-500">Name of the course this subject belongs to.</p>
+      </div>
+
+      <!-- Hours per Week -->
+      <div>
+        <label class="block text-gray-700 font-semibold mb-2">
+          Hours per Week <span class="text-red-500">*</span>
+        </label>
+        <input 
+          type="number" 
+          id="hours_per_week" 
+          name="hours_per_week" 
+          placeholder="Enter hours per week" 
+          min="0" max="40" 
+          required
+          class="w-full rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition"
+          aria-describedby="hours_per_week_help"
+        />
+        <p id="hours_per_week_help" class="mt-1 text-xs text-gray-500">Number of hours allocated per week.</p>
+      </div>
+
+      <!-- Submit Button -->
+      <div>
+        <button 
+          type="submit" 
+          class="w-full bg-indigo-600 text-white font-semibold py-2 rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition"
+        >
+          Add Subject
+        </button>
+      </div>
+
+
+
+</div>
+{% endblock main %}

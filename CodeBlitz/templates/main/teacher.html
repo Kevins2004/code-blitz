@@ -1,0 +1,162 @@
+{% extends 'main/index.html' %}
+{% comment %} {% load dict_extras %} {% endcomment %}
+
+{% block title %}<title>Teacher</title>{% endblock title %}
+
+{% block main %}
+<div class="p-6">
+
+    <!-- Page Header -->
+    <div class="flex justify-between items-center mb-6">
+        <h1 class="text-2xl font-bold text-gray-800">Class Timetable Scheduler</h1>
+    </div>
+
+    <!-- Timetable Form -->
+    <form method="POST" class="space-y-6 bg-white p-6 rounded-xl shadow-lg">
+        {% csrf_token %}
+
+                {% if messages %}
+  <div class="mb-4 space-y-2">
+    {% for message in messages %}
+      <div 
+        class="p-3 rounded-lg text-white
+        {% if message.tags == 'success' %} bg-green-600 {% elif message.tags == 'error' %} bg-red-600 {% else %} bg-gray-600 {% endif %}"
+      >
+        {{ message }}
+      </div>
+    {% endfor %}
+  </div>
+{% endif %}
+            
+      <!-- Name -->
+      <div>
+        <label class="block text-gray-700 font-semibold mb-2">
+          Name <span class="text-red-500">*</span>
+        </label>
+        <input 
+          type="text" 
+          id="name" 
+          name="name" 
+          placeholder="Enter full name" 
+          required
+          class="w-full rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition"
+          aria-describedby="name_help"
+        />
+        <p id="name_help" class="mt-1 text-xs text-gray-500">Full name of the teacher.</p>
+      </div>
+
+      <!-- Email -->
+      <div>
+        <label class="block text-gray-700 font-semibold mb-2">
+          Email <span class="text-red-500">*</span>
+        </label>
+        <input 
+          type="email" 
+          id="email" 
+          name="email" 
+          placeholder="Enter email address" 
+          required
+          class="w-full rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition"
+          aria-describedby="email_help"
+        />
+        <p id="email_help" class="mt-1 text-xs text-gray-500">Valid email address.</p>
+      </div>
+
+      <!-- Phone No -->
+      <div>
+        <label class="block text-gray-700 font-semibold mb-2">
+          Phone No <span class="text-red-500">*</span>
+        </label>
+        <input 
+          type="tel" 
+          id="phone" 
+          name="phone" 
+          placeholder="Enter phone number" 
+          pattern="[0-9+()-\s]{7,20}"
+          required
+          class="w-full rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition"
+          aria-describedby="phone_help" maxlength="10" max="10"
+        />
+        <p id="phone_help" class="mt-1 text-xs text-gray-500">Include country code if applicable.</p>
+      </div>
+
+      <!-- Designation -->
+      <div>
+        <label class="block text-gray-700 font-semibold mb-2">
+          Designation <span class="text-red-500">*</span>
+        </label>
+        <select 
+        id="designation" 
+        name="designation" 
+        required
+        class="w-full rounded-md border border-gray-300 px-3 py-2 bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition">
+        <option value="" disabled selected>Select a designation</option>
+        <option value="Professor">Professor</option>
+        <option value="Asst. Professor">Asst. Professor</option>
+        <option value="Lecture">Lecture</option>
+        
+    </select>
+        <p id="designation_help" class="mt-1 text-xs text-gray-500">Job title or role.</p>
+      </div>
+
+      <!-- Max Classes per Day -->
+      <div>
+        <label class="block text-gray-700 font-semibold mb-2">
+          Max Classes per Day <span class="text-red-500">*</span>
+        </label>
+        <input 
+          type="number" 
+          id="max_classes_day" 
+          name="max_classes_day" 
+          placeholder="e.g., 4" 
+          min="1" max="20" 
+          required
+          class="w-full rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition"
+          aria-describedby="max_classes_day_help"
+        />
+        <p id="max_classes_day_help" class="mt-1 text-xs text-gray-500">Maximum classes teacher can take per day.</p>
+      </div>
+
+      <!-- Max Classes per Week -->
+      <div>
+        <label class="block text-gray-700 font-semibold mb-2">
+          Max Classes per Week <span class="text-red-500">*</span>
+        </label>
+        <input 
+          type="number" 
+          id="max_classes_week" 
+          name="max_classes_week" 
+          placeholder="e.g., 20" 
+          min="1" max="100" 
+          required
+          class="w-full rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition"
+          aria-describedby="max_classes_week_help"
+        />
+        <p id="max_classes_week_help" class="mt-1 text-xs text-gray-500">Maximum classes teacher can take per week.</p>
+      </div>
+
+      <!-- Availability -->
+      <div>
+        <label class="block text-gray-700 font-semibold mb-2">
+          Availability <span class="text-red-500">*</span>
+        </label>
+        <div class="flex items-center space-x-6" role="radiogroup" aria-labelledby="availability_label">
+          <input type="text" placeholder="e.g, Mon-Sat 9-4" name="availability" id="availability" class="w-full rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition" />
+        </div>
+        <p id="availability_help" class="mt-1 text-xs text-gray-500">write teacher working days-time.</p>
+      </div>
+
+      <!-- Submit Button -->
+      <div>
+        <button 
+          type="submit" 
+          class="w-full bg-indigo-600 text-white font-semibold py-2 rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition"
+        >
+          Add Teacher
+        </button>
+      </div>
+
+
+
+</div>
+{% endblock main %}
